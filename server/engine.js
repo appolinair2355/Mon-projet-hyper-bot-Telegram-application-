@@ -2,8 +2,8 @@
  * Moteur de prédiction Baccarat
  */
 const db  = require('./db');
-const { fetchGames } = require('./routes/games');
-const { sendPredictionToTargets } = require('./services/telegram');
+const { fetchGames } = require('./games');
+const { sendPredictionToTargets } = require('./telegram-service');
 
 const ALL_SUITS   = ['♠', '♥', '♦', '♣'];
 const SUIT_DISPLAY = { '♠': '♠️', '♥': '❤️', '♦': '♦️', '♣': '♣️' };

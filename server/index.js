@@ -6,12 +6,12 @@ const path     = require('path');
 const compression = require('compression');
 
 const { initDB, USE_PG, pool } = require('./db');
-const authRoutes        = require('./routes/auth');
-const adminRoutes       = require('./routes/admin');
-const predictionsRoutes = require('./routes/predictions');
-const { router: gamesRouter } = require('./routes/games');
-const telegramRoutes    = require('./routes/telegram');
-const telegramService   = require('./services/telegram');
+const authRoutes        = require('./auth');
+const adminRoutes       = require('./admin');
+const predictionsRoutes = require('./predictions');
+const { router: gamesRouter } = require('./games');
+const telegramRoutes    = require('./telegram-route');
+const telegramService   = require('./telegram-service');
 const engine            = require('./engine');
 
 const app     = express();
@@ -61,9 +61,17 @@ app.use('/api/telegram',    telegramRoutes);
 app.get('/api/health', (req, res) => res.json({ status: 'ok', mode: USE_PG ? 'postgresql' : 'json', time: new Date() }));
 
 // ── Client statique ────────────────────────────────────────────────
-const distPath = path.join(__dirname, '../client/dist');
-const fs       = require('fs');
-if (fs.existsSync(distPath)) {
+// Cherche le dossier contenant index.html :
+// 1) client/dist/  → build Vite complet (dev Replit + Render avec rebuild)
+// 2) client/       → fichiers pré-compilés plats (déploiement ZIP)
+const fs = require('fs');
+const distPath = [
+  path.join(__dirname, '../client/dist'),
+  path.join(__dirname, '../client'),
+].find(p => fs.existsSync(path.join(p, 'index.html')));
+
+if (distPath) {
+  console.log(`📁 Fichiers client servis depuis : ${distPath}`);
   app.use(express.static(distPath, { maxAge: IS_PROD ? '1h' : 0 }));
   app.use((req, res, next) => {
     if (req.path.startsWith('/api')) return next();
