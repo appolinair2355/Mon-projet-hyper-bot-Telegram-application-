@@ -1,0 +1,32 @@
+{
+  "name": "baccarat-pro",
+  "version": "1.0.0",
+  "description": "Système de prédiction Baccarat temps réel — 1xBet",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "npm run build && node server/index.js",
+    "server": "node server/index.js",
+    "client": "cd client && npm run dev",
+    "build": "cd client && npm install && npm run build",
+    "prod": "node server/index.js",
+    "test": "echo \"No tests\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
+    "concurrently": "^9.2.1",
+    "connect-pg-simple": "^10.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "memorystore": "^1.6.7",
+    "node-fetch": "^2.7.0",
+    "node-telegram-bot-api": "^0.67.0",
+    "pg": "^8.20.0",
+    "wait-on": "^9.0.4"
+  }
+}
